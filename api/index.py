@@ -29,8 +29,8 @@ class handler(BaseHTTPRequestHandler):
                     value = float(value_str)
 
                     currency_data[currency_code] = {
-                        "CurrencyName": columns[1].get_text(strip=True),
-                        "Value": value / unit
+                        "Devise": columns[1].get_text(strip=True),
+                        "Valeur": value / unit
                     }
 
             json_data = json.dumps(currency_data, indent=2)
