@@ -34,31 +34,38 @@
 
 <script>
   // JSON data from the provided URL
-  const jsonDataUrl = 'https://devises.vercel.app/api';
+    const jsonDataUrl = 'https://devises.vercel.app/api';
   let currencyData;
 
   // Fetch JSON data from the URL
-  get(jsonDataUrl, function(data) {
-    currencyData = data;
+  $.ajax({
+    url: jsonDataUrl,
+    dataType: 'json',
+    success: function(data) {
+      currencyData = data;
 
-    // Populate the select box with currency names
-    const currencySelect = $('#currencySelect');
-    $.each(currencyData, function(code, currency) {
-      currencySelect.append($('<option>', {
-        value: code,
-        text: currency.CurrencyName
-      }));
-    });
+      // Populate the select box with currency names
+      const currencySelect = $('#currencySelect');
+      $.each(currencyData, function(code, currency) {
+        currencySelect.append($('<option>', {
+          value: code,
+          text: currency.CurrencyName
+        }));
+      });
 
-    // Attach event handler for amount input change
-    $('#amountInput').on('input', function() {
-      updateResult();
-    });
+      // Attach event handler for amount input change
+      $('#amountInput').on('input', function() {
+        updateResult();
+      });
 
-    // Attach event handler for currency select change
-    $('#currencySelect').on('change', function() {
-      updateResult();
-    });
+      // Attach event handler for currency select change
+      $('#currencySelect').on('change', function() {
+        updateResult();
+      });
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.error('Error fetching JSON:', textStatus, errorThrown);
+    }
   });
 
   // Function to update the result based on the selected currency and amount
