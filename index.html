@@ -38,7 +38,7 @@
   let currencyData;
 
   // Fetch JSON data from the URL
-  $.getJSON(jsonDataUrl, function(data) {
+  $.get(jsonDataUrl, function(data) {
     currencyData = data;
 
     // Populate the select box with currency names
