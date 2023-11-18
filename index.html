@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Currency Converter</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2>Currency Converter</h2>
+
+  <div class="form-group">
+    <label for="currencySelect">Select Currency:</label>
+    <select class="form-control" id="currencySelect"></select>
+  </div>
+
+  <div class="form-group">
+    <label for="amountInput">Enter Amount:</label>
+    <input type="number" class="form-control" id="amountInput">
+  </div>
+
+  <div class="form-group">
+    <label for="result">Result:</label>
+    <input type="text" class="form-control" id="result" readonly>
+  </div>
+</div>
+
+<!-- jQuery and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+  // JSON data from the provided URL
+  const jsonDataUrl = 'YOUR_JSON_URL';
+  let currencyData;
+
+  // Fetch JSON data from the URL
+  $.getJSON(jsonDataUrl, function(data) {
+    currencyData = data;
+
+    // Populate the select box with currency names
+    const currencySelect = $('#currencySelect');
+    $.each(currencyData, function(code, currency) {
+      currencySelect.append($('<option>', {
+        value: code,
+        text: currency.CurrencyName
+      }));
+    });
+
+    // Attach event handler for amount input change
+    $('#amountInput').on('input', function() {
+      updateResult();
+    });
+
+    // Attach event handler for currency select change
+    $('#currencySelect').on('change', function() {
+      updateResult();
+    });
+  });
+
+  // Function to update the result based on the selected currency and amount
+  function updateResult() {
+    const selectedCurrency = $('#currencySelect').val();
+    const amount = $('#amountInput').val();
+
+    if (selectedCurrency && amount) {
+      const conversionRate = currencyData[selectedCurrency].Value;
+      const result = amount * conversionRate;
+
+      // Display the result in the result input field
+      $('#result').val(result.toFixed(2));
+    } else {
+      $('#result').val('');
+    }
+  }
+</script>
+
+</body>
+</html>
