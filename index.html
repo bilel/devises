@@ -19,7 +19,7 @@
 
   <div class="form-group">
     <label for="amountInput">Enter Amount:</label>
-    <input type="number" class="form-control" id="amountInput">
+    <input type="text" class="form-control" id="amountInput">
   </div>
 
   <div class="form-group">
@@ -71,7 +71,8 @@
   // Function to update the result based on the selected currency and amount
   function updateResult() {
     const selectedCurrency = $('#currencySelect').val();
-    const amount = $('#amountInput').val();
+    const amount = parseFloat($('#amountInput').val()).toFixed(3)
+    
 
     if (selectedCurrency && amount) {
       const conversionRate = currencyData[selectedCurrency].Value;
