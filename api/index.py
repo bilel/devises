@@ -6,7 +6,7 @@ import json
 class handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
-        # Scrape website for currency data and serve as JSON
+        
         url = "https://www.bct.gov.tn/bct/siteprod/liste_cours_m.jsp"
         response = requests.get(url)
 
@@ -14,26 +14,26 @@ class handler(BaseHTTPRequestHandler):
             html = response.text
             soup = BeautifulSoup(html, 'html.parser')
 
-            currency_data = {}
+            devise_data = {}
 
             rows = soup.find_all('tr', height='20px')
 
             for row in rows:
                 columns = row.find_all('td')
                 if len(columns) == 5:
-                    unit_str = columns[3].find('center').get_text(strip=True).replace(',', '.')
-                    value_str = columns[4].find('center').get_text(strip=True).replace(',', '.')
+                    unite_str = columns[3].find('center').get_text(strip=True).replace(',', '.')
+                    valeur_str = columns[4].find('center').get_text(strip=True).replace(',', '.')
 
                     currency_code = columns[2].find('center').get_text(strip=True)
-                    unit = float(unit_str)
-                    value = float(value_str)
+                    unite = float(unite_str)
+                    valeur = float(valeur_str)
 
-                    currency_data[currency_code] = {
+                    devise_data[currency_code] = {
                         "Devise": columns[1].get_text(strip=True),
-                        "Valeur": value / unit
+                        "Valeur": valeur / unite
                     }
 
-            json_data = json.dumps(currency_data, indent=2)
+            json_data = json.dumps(devise_data, indent=2)
 
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
